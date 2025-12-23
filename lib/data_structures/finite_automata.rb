@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module DataStructures
+  ##
+  # A Finite State Automate
   module FiniteAutomata
     ##
     # Represents a single rule in a Finite State Automata
@@ -11,6 +13,18 @@ module DataStructures
 
       def follow
         next_state
+      end
+    end
+
+    ##
+    # Represents a list of rules and a mechanism to follow them
+    RuleBook = Struct.new(:rules) do
+      def next_state(state, symbol)
+        rule_for(state, symbol).follow
+      end
+
+      def rule_for(state, symbol)
+        rules.find { |rule| rule.applies?(state, symbol) }
       end
     end
   end
