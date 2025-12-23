@@ -27,5 +27,19 @@ module DataStructures
         rules.find { |rule| rule.applies?(state, symbol) }
       end
     end
+
+    DFA = Struct.new(:current_state, :accepting_states, :rulebook) do
+      def accepting?
+        accepting_states.include?(current_state)
+      end
+
+      def read_one(symbol)
+        self.current_state = rulebook.next_state(current_state, symbol)
+      end
+
+      def read_many(symbols)
+        symbols.each { |symbol| read_one(symbol) }
+      end
+    end
   end
 end
